@@ -1,0 +1,3 @@
+
+SML_DIR=sml
+SML_INCLUDE_DIR=${SML_DIR}/include

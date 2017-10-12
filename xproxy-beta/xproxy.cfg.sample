@@ -1,0 +1,83 @@
+[main]
+bind_ip = 127.0.0.1
+bind_port = 12345
+# The number of networking threads is scale_factor * number_of_cores.
+scale_factor = 1.0
+# The max count of simultaneously opened file descriptors - files, sockets, etc.
+# The count here must not be bigger than the system setting in /proc/sys/fs/nr_open
+max_count_fds = 1048576
+# Must be equal to the default window parameter of the kernel module for
+# backpressure control. It's in bytes.
+kmod_def_window = 16400
+# The DSCP mark set for traffic going from the cache to the client
+dscp_hit=4
+# The DSCP mark set for traffic going from the origin to the client
+dscp_miss=0
+
+[cache]
+# Relative or full path to the storage.cfg file.
+storage_cfg = /z/xproxy/storage.cfg
+# Number of threads per volume (disk, file) from the storage.cfg.
+# Note that these threads can't be less than 2.
+volume_threads = 8
+# The lower boundary of the average cache object size, in KB. 
+# The size of the metadata, needed for the filesystem on every provided volume, 
+# depends on this parameter.
+# Larger object size will lead to smaller metadata size, but may also lead
+# to wasted volume space if the stored objects are mostly below this size.
+# Smaller object size will have the opposite effect.
+# Changing this parameter and loading already initialized volume will lead
+# to reinitialization of the volume metadata and THUS LOOSING THE CONTENT.
+min_avg_object_size_KB = 16
+
+[plugins]
+cache_url_cfg = /z/xproxy/plugin_cfgs/cache_url.cfg
+host_stats_cfg = /z/xproxy/plugin_cfgs/host_stats.cfg
+
+[mgmt]
+bind_ip = 127.0.0.1
+bind_port = 33686
+
+[priv]
+user = proxy
+work_dir = /y/logs/xproxy
+
+[log]
+# The supported log levels for all log types are the following:
+# off - no log messages will be logged
+# fatal - log only fatal messages
+# error - log fatal and error messages
+# warn - log fatal, error and warning messages
+# info - log all of the above levels plus info messages
+# debug - log all of the above levels plus debug messages
+# trace - log all of the above levels plus trace messages
+#
+# The directory where all file logs will get put
+logs_dir = /y/logs/xproxy
+# The main log will get rotated when it gets past this size.
+# Note that it may get bigger than the size with few hundred bytes
+# before it gets rotated.
+main_log_rotate_MB = 512
+# Number of kept rotated main logs. If this number is 0 the rotated logs
+# gets removed instead of being kept.
+main_log_rotate_count = 2
+# The max log level of the main log
+main_log_level = warn
+# The max log level of the messages going to the system log/dmesg
+sys_log_level = fatal
+# The default max log level of the messages going to the real-time debug logs.
+# The real time debug logs are started on demand for given period of time
+# to debug an issue or smth like that.
+debug_log_level = debug
+# The squid log gets slided instead of being rotated. This means that there
+# will always be just single squid log file which will be truncated from the
+# beginning when it get past this size i.e. the oldest messages in the log
+# will get removed.
+# Note that it may get bigger than the size with few hundred bytes
+# before it gets slided.
+squid_log_slide_MB = 2048
+# The max allowed count of pending log records. The logging is asynchronous
+# and the log records get queued to a queue before they get logged by a
+# different thread. The queued records won't go past this limit in order
+# to avoid constantly increasing memory consumption in some strange cases.
+max_pending_records = 100

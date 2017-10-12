@@ -1,0 +1,12 @@
+
+­
+pb_stats.protopb_stats"e
+	StatEntry
+host (
+	bytes_hit (
+
+bytes_miss (
+reqs_hit (
+	reqs_miss ("*
+Stats!
+data (2.pb_stats.StatEntry

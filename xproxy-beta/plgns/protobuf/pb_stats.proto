@@ -1,0 +1,15 @@
+package pb_stats;
+
+message StatEntry {
+    // Sometimes we have invalid utf-8 symbols in the host.
+    // That's why it's type bytes instead of string.
+    required bytes host = 1;
+    required int64 bytes_hit = 2;
+    required int64 bytes_miss = 3;
+    required int32 reqs_hit = 4;
+    required int32 reqs_miss = 5;
+}
+
+message Stats {
+    repeated StatEntry data = 1;
+}
